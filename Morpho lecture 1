@@ -1,0 +1,41 @@
+pip install genanki
+from genanki import Deck, Note, Package, Model
+
+# Define the Anki model for the cards
+model_id = 1607392319
+model = Model(
+    model_id,
+    'Simple Model',
+    fields=[{'name': 'Question'}, {'name': 'Answer'}],
+    templates=[
+        {
+            'name': 'Card 1',
+            'qfmt': '{{Question}}',
+            'afmt': '{{FrontSide}}<hr id="answer">{{Answer}}',
+        },
+    ]
+)
+
+# Create the deck
+deck_id = 2059400110
+deck = Deck(deck_id, "Detailed Physiology and Pathophysiology")
+
+# Add your questions and answers here
+cards_data = [
+    ("What is the protective environment for cells called?", "Milieu intérieur"),
+    ("What happens if an organism loses its ability to adapt?", "Pathological mechanisms appear, leading to diseases."),
+    # Add all Q&A pairs here based on the text
+]
+
+# Add flashcards to the deck
+for question, answer in cards_data:
+    note = Note(
+        model=model,
+        fields=[question, answer]
+    )
+    deck.add_note(note)
+
+# Export to .apkg file
+anki_file_path = "Physiology_Pathophysiology_Deck.apkg"
+Package(deck).write_to_file(anki_file_path)
+print(f"Anki deck saved as {anki_file_path}")
